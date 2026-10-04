@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>İlanMatik - Profesyonel Çoklu İlan ve Broşür Oluşturucu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Montserrat', sans-serif; }
+    .font-serif-italic { font-family: 'Playfair Display', serif; font-style: italic; }
+    #brosur-alani { width: 500px; height: 700px; min-width: 500px; min-height: 700px; max-width: 500px; max-height: 700px; }
+    .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen p-4 md:p-8">
+
+  <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    
+    <!-- SOL: FORM PANELİ -->
+    <div class="lg:col-span-5 bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-700 space-y-5 max-h-[92vh] overflow-y-auto">
+      <h1 class="text-xl font-bold text-amber-400 border-b border-slate-700 pb-3 flex items-center justify-between">
+        <span>✨ İlan Detayları</span>
+        <span class="text-xs font-normal text-slate-400">Modüler Tasarım</span>
+      </h1>
+
+      <!-- KATEGORİ SEÇİMİ -->
+      <div class="space-y-1">
+        <label class="block text-xs font-bold text-slate-400 uppercase">1. Kategori Seçin</label>
+        <select id="cat-select" onchange="changeCategory(this.value)" class="w-full bg-slate-700 border border-amber-500 rounded-lg p-2.5 text-sm font-bold text-white focus:outline-none">
+          <option value="emlak">🏠 Emlak (Konut / Daire / Arsa)</option>
+          <option value="vasita">🚗 Vasıta (Otomobil / Araç)</option>
+          <option value="elektronik">📱 Elektronik (Telefon / Laptop)</option>
+          <option value="giyim">👕 Giyim & Moda & Aksesuar</option>
+          <option value="hizmet">💼 Hizmet & İş & Tadilat</option>
+          <option value="market">🛒 Market & Genel Mağaza</option>
+        </select>
+      </div>
+
+      <!-- İŞLETME/MAĞAZA ADI VE İLAN TİPİ -->
+      <div class="grid grid-cols-2 gap-3 border-t border-slate-700 pt-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-400 uppercase mb-1">İşletme / Mağaza Adı</label>
+          <input type="text" id="inp-store-name" value="ÖZTÜRK GAYRİMENKUL" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2 text-xs text-white" placeholder="Örn: Özcan Galeri / Öztürk Emlak">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-400 uppercase mb-1">İlan Tipi</label>
+          <input type="text" id="inp-type" value="SATILIK" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2 text-xs text-amber-400 font-bold" placeholder="Örn: SATILIK / KİRALIK / SIFIR">
+        </div>
+      </div>
+
+      <!-- FOTOĞRAFLAR -->
+      <div class="space-y-2 border-t border-slate-700 pt-3">
+        <label class="block text-xs font-bold text-slate-400 uppercase">Görsel Yükle</label>
+        <div>
+          <span class="text-[11px] text-slate-300 block mb-1">Ana Görsel (Büyük)</span>
+          <input type="file" id="img-main" accept="image/*" class="w-full text-xs text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-amber-500 file:text-slate-900 font-semibold">
+        </div>
+        <div>
+          <span class="text-[11px] text-slate-300 block mb-1">Detay Görselleri (3 Adet)</span>
+          <div class="grid grid-cols-3 gap-2">
+            <input type="file" id="img-sub1" accept="image/*" class="text-[10px] text-slate-400">
+            <input type="file" id="img-sub2" accept="image/*" class="text-[10px] text-slate-400">
+            <input type="file" id="img-sub3" accept="image/*" class="text-[10px] text-slate-400">
+          </div>
+        </div>
+      </div>
+
+      <!-- BAŞLIK & AÇIKLAMA -->
+      <div class="space-y-2 border-t border-slate-700 pt-3">
+        <div>
+          <label class="block text-xs text-slate-300 mb-1">İlan Başlığı</label>
+          <input type="text" id="inp-title" value="LUXURY DAİRE" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2 text-xs text-white" placeholder="Başlık girin">
+        </div>
+        <div>
+          <label class="block text-xs text-slate-300 mb-1">Açıklama Metni</label>
+          <textarea id="inp-desc" rows="2" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2 text-xs text-white" placeholder="Detaylı açıklama">Şehrin prestijli lokasyonunda, ulaşımı kolay, modern mimariye sahip ve yüksek prim potansiyelli eşsiz fırsat!</textarea>
+        </div>
+      </div>
+
+      <!-- ÖZELLİK MADDELERİ -->
+      <div class="border-t border-slate-700 pt-3 space-y-2">
+        <label class="block text-xs font-bold text-slate-400 uppercase">Özellikler / Detaylar (6 Madde)</label>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <input type="text" id="inp-f1" value="5+1 Oda" class="bg-slate-700 border border-slate-600 rounded p-1.5">
+          <input type="text" id="inp-f2" value="300 m²" class="bg-slate-700 border border-slate-600 rounded p-1.5">
+          <input type="text" id="inp-f3" value="Merkezi Konum" class="bg-slate-700 border border-slate-600 rounded p-1.5">
+          <input type="text" id="inp-f4" value="4 Banyo" class="bg-slate-700 border border-slate-600 rounded p-1.5">
+          <input type="text" id="inp-f5" value="Otopark Var" class="bg-slate-700 border border-slate-600 rounded p-1.5">
+          <input type="text" id="inp-f6" value="Site İçi" class="bg-slate-700 border border-slate-600 rounded p-1.5">
+        </div>
+      </div>
+
+      <!-- FİYAT, ADRES, İLETİŞİM -->
+      <div class="border-t border-slate-700 pt-3 space-y-2">
+        <label class="block text-xs font-bold text-slate-400 uppercase">Fiyat, Adres & İletişim</label>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <input type="text" id="inp-price" value="8.500.000 TL" placeholder="Fiyat" class="bg-slate-700 border border-slate-600 rounded p-2 text-amber-400 font-bold">
+          <input type="text" id="inp-phone" value="0555 123 45 67" placeholder="Telefon" class="bg-slate-700 border border-slate-600 rounded p-2">
+          <input type="text" id="inp-address" value="Alsancak Mah. Atatürk Cad. No:12 Konak / İzmir" placeholder="Açık Adres" class="col-span-2 bg-slate-700 border border-slate-600 rounded p-2">
+        </div>
+      </div>
+
+      <button onclick="downloadPNG()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-black py-3 rounded-xl shadow-lg transition text-sm">
+        📸 BROŞÜRÜ YÜKSEK KALİTE İNDİR (PNG)
+      </button>
+    </div>
+
+    <!-- SAĞ: CANLI BROŞÜR ÖNİZLEMESİ (KİLİTLİ 500x700 BÖLGE) -->
+    <div class="lg:col-span-7 flex flex-col items-center justify-center sticky top-4">
+      <span class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">CANLI AFİŞ ÖNİZLEMESİ (500x700px)</span>
+      
+      <div id="brosur-alani" class="bg-[#1e293b] text-white overflow-hidden shadow-2xl flex flex-col justify-between relative rounded-sm">
+        
+        <!-- ŞABLON KAPLAYICI (DİNAMİK İÇERİK BURAYA GELİR) -->
+        <div id="template-render" class="w-full h-full flex flex-col justify-between">
+          <!-- JS ile doldurulacak -->
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // VARSAYILAN GÖRSELLER (UNSPLASH KÜTÜPHANESİ)
+    const defaultImages = {
+      emlak: [
+        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80",
+        "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=400&q=80",
+        "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=400&q=80",
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80"
+      ],
+      vasita: [
+        "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&q=80",
+        "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?w=400&q=80",
+        "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&q=80",
+        "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=400&q=80"
+      ],
+      elektronik: [
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80",
+        "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&q=80",
+        "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=400&q=80",
+        "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=400&q=80"
+      ],
+      giyim: [
+        "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80",
+        "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&q=80",
+        "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400&q=80",
+        "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&q=80"
+      ],
+      hizmet: [
+        "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80",
+        "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400&q=80",
+        "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=80",
+        "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=400&q=80"
+      ],
+      market: [
+        "https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80",
+        "https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=400&q=80",
+        "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=400&q=80",
+        "https://images.unsplash.com/photo-1588964895597-cfccd6e2dbf9?w=400&q=80"
+      ]
+    };
+
+    let uploadedImages = { main: null, sub1: null, sub2: null, sub3: null };
+
+    // KATEGORİ DEĞİŞTİRME MEKANİZMASI
+    function changeCategory(cat) {
+      const render = document.getElementById('template-render');
+      const imgs = defaultImages[cat];
+
+      const imgMain = uploadedImages.main || imgs[0];
+      const img1 = uploadedImages.sub1 || imgs[1];
+      const img2 = uploadedImages.sub2 || imgs[2];
+      const img3 = uploadedImages.sub3 || imgs[3];
+
+      if(cat === 'emlak') {
+        render.innerHTML = `
+          <div class="h-[300px] relative bg-slate-800 overflow-hidden">
+            <img src="${imgMain}" id="p-main" class="w-full h-full object-cover">
+            <div class="absolute top-3 left-3 bg-amber-500 text-slate-900 px-3 py-1 text-xs font-black rounded uppercase" id="p-store">ÖZTÜRK GAYRİMENKUL</div>
+            <div class="absolute bottom-3 left-3 bg-black/70 backdrop-blur-md border border-white/20 text-white px-4 py-2 rounded">
+              <span class="text-xs font-bold text-amber-400 block" id="p-type">SATILIK</span>
+              <span class="text-xl font-black uppercase leading-none" id="p-title">LUXURY DAİRE</span>
+            </div>
+          </div>
+          <div class="bg-[#2d3748] p-3 text-center border-y border-slate-700">
+            <p class="text-[11px] italic text-slate-200 line-clamp-2" id="p-desc">Şehrin prestijli lokasyonunda, ulaşımı kolay, modern mimariye sahip ve yüksek prim potansiyelli eşsiz fırsat!</p>
+          </div>
+          <div class="grid grid-cols-12 h-[220px] bg-slate-900">
+            <div class="col-span-5 p-3 flex flex-col justify-around text-[11px] bg-slate-800 border-r border-slate-700">
+              <div><span class="text-slate-400 block text-[9px] uppercase">Oda</span><span class="font-bold text-amber-400" id="p-f1">5+1 Oda</span></div>
+              <div><span class="text-slate-400 block text-[9px] uppercase">Metrekare</span><span class="font-bold text-amber-400" id="p-f2">300 m²</span></div>
+              <div><span class="text-slate-400 block text-[9px] uppercase">Konum</span><span class="font-bold" id="p-f3">Merkezi Konum</span></div>
+              <div><span class="text-slate-400 block text-[9px] uppercase">Banyo</span><span class="font-bold" id="p-f4">4 Banyo</span></div>
+              <div><span class="text-slate-400 block text-[9px] uppercase">Ekstra</span><span class="font-bold" id="p-f5">Otopark Var</span></div>
+              <div><span class="text-slate-400 block text-[9px] uppercase">Durum</span><span class="font-bold" id="p-f6">Site İçi</span></div>
+            </div>
+            <div class="col-span-7 grid grid-cols-2 gap-1 p-1 bg-slate-900">
+              <div class="col-span-2 h-[105px]"><img src="${img1}" id="p-sub1" class="w-full h-full object-cover rounded-sm"></div>
+              <div class="h-[95px]"><img src="${img2}" id="p-sub2" class="w-full h-full object-cover rounded-sm"></div>
+              <div class="h-[95px]"><img src="${img3}" id="p-sub3" class="w-full h-full object-cover rounded-sm"></div>
+            </div>
+          </div>
+          <div class="bg-slate-900 p-4 border-t border-slate-700 flex justify-between items-center h-[90px]">
+            <div>
+              <span class="text-2xl font-black text-amber-400 block leading-none" id="p-price">8.500.000 TL</span>
+              <span class="text-[10px] text-slate-400 block mt-1 max-w-[260px] truncate" id="p-address">Alsancak Mah. Atatürk Cad. No:12 Konak / İzmir</span>
+            </div>
+            <div class="text-right">
+              <span class="text-[10px] font-bold text-slate-400 uppercase block">İletişim</span>
+              <span class="text-sm font-black text-white block" id="p-phone">0555 123 45 67</span>
+            </div>
+          </div>
+        `;
+      } else if(cat === 'vasita') {
+        render.innerHTML = `
+          <div class="bg-slate-900 p-3 border-b border-slate-800 flex justify-between items-center">
+            <span class="text-xs font-black text-amber-400 uppercase tracking-wider" id="p-store">ÖZCAN GALERİ</span>
+            <span class="bg-amber-500 text-slate-900 text-[10px] font-black px-2 py-0.5 rounded uppercase" id="p-type">SATILIK ARAÇ</span>
+          </div>
+          <div class="grid grid-cols-4 gap-1 p-2 bg-slate-950">
+            <div class="h-[55px]"><img src="${img1}" id="p-sub1" class="w-full h-full object-cover rounded"></div>
+            <div class="h-[55px]"><img src="${img2}" id="p-sub2" class="w-full h-full object-cover rounded"></div>
+            <div class="h-[55px]"><img src="${img3}" id="p-sub3" class="w-full h-full object-cover rounded"></div>
+            <div class="h-[55px] bg-slate-800 flex items-center justify-center text-[9px] font-bold text-amber-400 text-center rounded border border-amber-500/30">EXPERTİZ GARANTİLİ</div>
+          </div>
+          <div class="h-[280px] relative bg-slate-800 overflow-hidden">
+            <img src="${imgMain}" id="p-main" class="w-full h-full object-cover">
+            <div class="absolute bottom-2 left-2 bg-black/80 px-3 py-1.5 rounded border border-slate-700">
+              <span class="text-lg font-black text-white uppercase" id="p-title">HONDA JAZZ RS</span>
+            </div>
+          </div>
+          <div class="p-3 bg-slate-900 grid grid-cols-3 gap-2 text-center text-xs border-y border-slate-800">
+            <div class="bg-slate-800 p-1.5 rounded"><span class="text-[9px] text-slate-400 block">MODEL/YIL</span><span class="font-bold text-amber-400" id="p-f1">2014</span></div>
+            <div class="bg-slate-800 p-1.5 rounded"><span class="text-[9px] text-slate-400 block">KİLOMETRE</span><span class="font-bold text-amber-400" id="p-f2">120.000 KM</span></div>
+            <div class="bg-slate-800 p-1.5 rounded"><span class="text-[9px] text-slate-400 block">VİTES/YAKIT</span><span class="font-bold" id="p-f3">Otomatik</span></div>
+          </div>
+          <div class="p-3 bg-slate-900 flex justify-between items-center h-[120px]">
+            <div>
+              <span class="text-[10px] text-slate-400 block" id="p-desc">Ekspertiz raporlu, kazasız, tramersiz temiz aile aracı.</span>
+              <span class="text-2xl font-black text-amber-400 block mt-1" id="p-price">170.000 TL</span>
+            </div>
+            <div class="text-right bg-slate-800 p-2.5 rounded border border-slate-700">
+              <span class="text-[9px] text-slate-400 uppercase block">Hemen Arayın</span>
+              <span class="text-sm font-black text-white block" id="p-phone">0555 123 45 67</span>
+              <span class="text-[9px] text-slate-400 block truncate max-w-[130px] mt-1" id="p-address">Galericiler Sitesi No:4</span>
+            </div>
+          </div>
+        `;
+      } else if(cat === 'elektronik') {
+        render.innerHTML = `
+          <div class="p-4 bg-gradient-to-br from-indigo-900 to-slate-900 h-full flex flex-col justify-between">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-black text-cyan-400 tracking-wider" id="p-store">TEKNO DÜNYASI</span>
+              <span class="bg-cyan-400 text-slate-900 text-[10px] font-black px-2 py-0.5 rounded" id="p-type">SIFIR / GARANTİLİ</span>
+            </div>
+            <div class="my-2">
+              <h2 class="text-2xl font-black text-white uppercase leading-tight" id="p-title">SONY WH-1000XM5</h2>
+              <p class="text-[11px] text-slate-300 line-clamp-2 mt-1" id="p-desc">Gürültü engelleyici kablosuz kulaklık. Orijinal kutulu ve faturalı.</p>
+            </div>
+            <div class="grid grid-cols-12 gap-2 h-[280px]">
+              <div class="col-span-8 h-full bg-slate-800/50 rounded-xl overflow-hidden border border-cyan-500/20 relative">
+                <img src="${imgMain}" id="p-main" class="w-full h-full object-cover">
+                <div class="absolute top-2 right-2 bg-cyan-400 text-slate-900 font-black text-sm px-3 py-1 rounded-full" id="p-price">9.999 TL</div>
+              </div>
+              <div class="col-span-4 flex flex-col gap-1.5">
+                <div class="h-[85px] rounded-lg overflow-hidden border border-slate-700"><img src="${img1}" id="p-sub1" class="w-full h-full object-cover"></div>
+                <div class="h-[85px] rounded-lg overflow-hidden border border-slate-700"><img src="${img2}" id="p-sub2" class="w-full h-full object-cover"></div>
+                <div class="h-[85px] rounded-lg overflow-hidden border border-slate-700"><img src="${img3}" id="p-sub3" class="w-full h-full object-cover"></div>
+              </div>
+            </div>
+            <div class="grid grid-cols-3 gap-2 text-[10px] text-center my-2">
+              <div class="bg-slate-800/80 p-1.5 rounded border border-slate-700"><span id="p-f1">2 Yıl Garanti</span></div>
+              <div class="bg-slate-800/80 p-1.5 rounded border border-slate-700"><span id="p-f2">Kutulu / Faturalı</span></div>
+              <div class="bg-slate-800/80 p-1.5 rounded border border-slate-700"><span id="p-f3">Takas Olur</span></div>
+            </div>
+            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex justify-between items-center">
+              <div>
+                <span class="text-[9px] text-slate-400 block uppercase">Mağaza Adresi</span>
+                <span class="text-[10px] text-slate-200 block truncate max-w-[200px]" id="p-address">Teknoloji Pasajı Kat:1 İzmir</span>
+              </div>
+              <div class="text-right">
+                <span class="text-[9px] text-cyan-400 block uppercase font-bold">Müşteri Hattı</span>
+                <span class="text-xs font-black text-white" id="p-phone">0555 123 45 67</span>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if(cat === 'giyim') {
+        render.innerHTML = `
+          <div class="p-4 bg-[#18181b] h-full flex flex-col justify-between text-zinc-100">
+            <div class="flex justify-between items-end border-b border-zinc-800 pb-2">
+              <div>
+                <span class="text-[10px] tracking-widest text-amber-400 uppercase font-bold block" id="p-store">BOUTIQUE LUXE</span>
+                <h2 class="text-xl font-black uppercase tracking-wider" id="p-title">ZARA DERİ CEKET</h2>
+              </div>
+              <span class="bg-amber-400 text-zinc-950 text-[10px] font-black px-2 py-1 rounded uppercase" id="p-type">YENİ SEZON</span>
+            </div>
+            <div class="grid grid-cols-12 gap-2 h-[380px] my-2">
+              <div class="col-span-7 h-full rounded-lg overflow-hidden border border-zinc-800 relative">
+                <img src="${imgMain}" id="p-main" class="w-full h-full object-cover">
+                <div class="absolute bottom-3 left-3 bg-zinc-950/90 border border-amber-400/40 text-amber-400 px-3 py-1 text-base font-black rounded" id="p-price">2.500 TL</div>
+              </div>
+              <div class="col-span-5 flex flex-col gap-2">
+                <div class="h-[120px] rounded-lg overflow-hidden border border-zinc-800"><img src="${img1}" id="p-sub1" class="w-full h-full object-cover"></div>
+                <div class="h-[120px] rounded-lg overflow-hidden border border-zinc-800"><img src="${img2}" id="p-sub2" class="w-full h-full object-cover"></div>
+                <div class="h-[120px] rounded-lg overflow-hidden border border-zinc-800"><img src="${img3}" id="p-sub3" class="w-full h-full object-cover"></div>
+              </div>
+            </div>
+            <div class="bg-zinc-900 p-2.5 rounded-lg border border-zinc-800 text-[11px] grid grid-cols-3 gap-1 text-center font-semibold">
+              <div>Beden: <span class="text-amber-400" id="p-f1">M Beden</span></div>
+              <div>Renk: <span class="text-amber-400" id="p-f2">Siyah</span></div>
+              <div>Durum: <span class="text-amber-400" id="p-f3">Sıfır Etiketli</span></div>
+            </div>
+            <div class="flex justify-between items-center pt-2 border-t border-zinc-800">
+              <span class="text-[10px] text-zinc-400 truncate max-w-[220px]" id="p-address">Nişantaşı Mağaza / İstanbul</span>
+              <span class="text-xs font-bold text-amber-400" id="p-phone">0555 123 45 67</span>
+            </div>
+          </div>
+        `;
+      } else if(cat === 'hizmet') {
+        render.innerHTML = `
+          <div class="p-5 bg-slate-900 h-full flex flex-col justify-between border-4 border-blue-600">
+            <div class="text-center border-b border-slate-800 pb-3">
+              <span class="text-xs font-black text-blue-400 uppercase tracking-widest block" id="p-store">YILMAZ TEKNİK YAPILAR</span>
+              <h2 class="text-2xl font-black text-white uppercase mt-1" id="p-title">TADİLAT & DEKORASYON</h2>
+            </div>
+            <div class="grid grid-cols-12 gap-3 my-2 items-center">
+              <div class="col-span-6 h-[180px] rounded-xl overflow-hidden border-2 border-blue-500">
+                <img src="${imgMain}" id="p-main" class="w-full h-full object-cover">
+              </div>
+              <div class="col-span-6 space-y-1.5 text-xs">
+                <div class="bg-slate-800 p-2 rounded border-l-2 border-blue-500 font-bold" id="p-f1">Anahtar Teslim Tadilat</div>
+                <div class="bg-slate-800 p-2 rounded border-l-2 border-blue-500 font-bold" id="p-f2">Ücretsiz Keşif Hizmeti</div>
+                <div class="bg-slate-800 p-2 rounded border-l-2 border-blue-500 font-bold" id="p-f3">10 Yıl Garantili İşçilik</div>
+                <div class="bg-slate-800 p-2 rounded border-l-2 border-blue-500 font-bold" id="p-f4">Zamanında Teslimat</div>
+              </div>
+            </div>
+            <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700">
+              <p class="text-[11px] text-slate-300 text-center italic" id="p-desc">Uzman kadromuzla ev ve ofislerinizde kaliteli, hızlı ve ekonomik çözümler sunuyoruz.</p>
+            </div>
+            <div class="bg-blue-600 p-3 rounded-xl text-slate-950 flex justify-between items-center">
+              <div>
+                <span class="text-[9px] font-black uppercase block text-slate-900">Servis Bölgemiz</span>
+                <span class="text-xs font-bold block truncate max-w-[200px]" id="p-address">Tüm İzmir ve Çevre İlçeleri</span>
+              </div>
+              <div class="text-right">
+                <span class="text-[9px] font-black uppercase block text-slate-900">Bilgi & Randevu</span>
+                <span class="text-sm font-black text-slate-950 block" id="p-phone">0555 123 45 67</span>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if(cat === 'market') {
+        render.innerHTML = `
+          <div class="p-4 bg-red-700 h-full flex flex-col justify-between text-white">
+            <div class="bg-white text-red-700 p-2 text-center rounded-xl shadow-lg">
+              <span class="text-xs font-black uppercase block" id="p-store">SÜPER ÖZCAN MARKET</span>
+              <h2 class="text-xl font-black uppercase tracking-tight" id="p-title">HAFTANIN DEV İNDİRİMLERİ</h2>
+            </div>
+            <div class="grid grid-cols-2 gap-2 my-2 h-[360px]">
+              <div class="bg-white text-slate-900 p-2 rounded-xl flex flex-col justify-between items-center text-center">
+                <img src="${imgMain}" id="p-main" class="h-[100px] object-contain">
+                <span class="text-xs font-bold line-clamp-1" id="p-f1">Fırsat Ürünü 1</span>
+                <span class="text-base font-black text-red-600" id="p-price">149,90 TL</span>
+              </div>
+              <div class="bg-white text-slate-900 p-2 rounded-xl flex flex-col justify-between items-center text-center">
+                <img src="${img1}" id="p-sub1" class="h-[100px] object-contain">
+                <span class="text-xs font-bold line-clamp-1" id="p-f2">Fırsat Ürünü 2</span>
+                <span class="text-base font-black text-red-600" id="p-f3">89,90 TL</span>
+              </div>
+              <div class="bg-white text-slate-900 p-2 rounded-xl flex flex-col justify-between items-center text-center">
+                <img src="${img2}" id="p-sub2" class="h-[100px] object-contain">
+                <span class="text-xs font-bold line-clamp-1" id="p-f4">Fırsat Ürünü 3</span>
+                <span class="text-base font-black text-red-600" id="p-f5">49,90 TL</span>
+              </div>
+              <div class="bg-white text-slate-900 p-2 rounded-xl flex flex-col justify-between items-center text-center">
+                <img src="${img3}" id="p-sub3" class="h-[100px] object-contain">
+                <span class="text-xs font-bold line-clamp-1" id="p-f6">Fırsat Ürünü 4</span>
+                <span class="text-base font-black text-red-600">29,90 TL</span>
+              </div>
+            </div>
+            <div class="bg-red-900/80 p-2.5 rounded-xl border border-red-500 flex justify-between items-center text-xs">
+              <div>
+                <span class="text-[9px] text-red-200 block uppercase">Adres</span>
+                <span class="font-bold block truncate max-w-[200px]" id="p-address">Merkez Mah. Çarşı Cad. No:5</span>
+              </div>
+              <div class="text-right">
+                <span class="text-[9px] text-red-200 block uppercase">Sipariş Hattı</span>
+                <span class="font-black text-amber-300 block" id="p-phone">0555 123 45 67</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      updatePreviewAll();
+    }
+
+    // ANLIK METİN GÜNCELLEME
+    function updatePreviewAll() {
+      const mappings = [
+        ['inp-store-name', 'p-store'],
+        ['inp-type', 'p-type'],
+        ['inp-title', 'p-title'],
+        ['inp-desc', 'p-desc'],
+        ['inp-f1', 'p-f1'],
+        ['inp-f2', 'p-f2'],
+        ['inp-f3', 'p-f3'],
+        ['inp-f4', 'p-f4'],
+        ['inp-f5', 'p-f5'],
+        ['inp-f6', 'p-f6'],
+        ['inp-price', 'p-price'],
+        ['inp-phone', 'p-phone'],
+        ['inp-address', 'p-address']
+      ];
+
+      mappings.forEach(([inputId, previewId]) => {
+        const inp = document.getElementById(inputId);
+        const prev = document.getElementById(previewId);
+        if (inp && prev) {
+          prev.innerText = inp.value;
+        }
+      });
+    }
+
+    // FORM ELEMANLARINA DİNLEME EKLEME
+    document.querySelectorAll('input, textarea').forEach(el => {
+      el.addEventListener('input', updatePreviewAll);
+    });
+
+    // FOTOĞRAF YÜKLEME VE BAĞLANTI
+    function bindImageUpload(inputId, targetKey, previewId) {
+      document.getElementById(inputId)?.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = ev => {
+            uploadedImages[targetKey] = ev.target.result;
+            const imgEl = document.getElementById(previewId);
+            if(imgEl) imgEl.src = ev.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
+    bindImageUpload('img-main', 'main', 'p-main');
+    bindImageUpload('img-sub1', 'sub1', 'p-sub1');
+    bindImageUpload('img-sub2', 'sub2', 'p-sub2');
+    bindImageUpload('img-sub3', 'sub3', 'p-sub3');
+
+    // PNG OLARAK İNDİRME
+    function downloadPNG() {
+      const area = document.getElementById('brosur-alani');
+      html2canvas(area, { scale: 3, useCORS: true }).then(canvas => {
+        const a = document.createElement('a');
+        a.download = `ilan-brosur-${Date.now()}.png`;
+        a.href = canvas.toDataURL('image/png');
+        a.click();
+      });
+    }
+
+    // İLK YÜKLEMEDE EMLAK KATEGORİSİNİ BAŞLAT
+    window.onload = () => changeCategory('emlak');
+  </script>
+</body>
+</html>
