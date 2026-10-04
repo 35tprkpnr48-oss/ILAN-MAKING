@@ -1,0 +1,3 @@
+git add .
+git commit -m "sitemap rotası eklendi"
+git push origin main
